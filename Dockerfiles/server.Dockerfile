@@ -1,4 +1,4 @@
-ARG CUDA_VERSION=11.6.0
+ARG CUDA_VERSION=11.0.3
 
 FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu20.04
 
@@ -27,6 +27,7 @@ RUN apt-get update \
     && pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 
 COPY server ./server
+COPY clip.yaml ./
 # given by builder
 ARG PIP_TAG
 RUN pip install --default-timeout=1000 --compile ./server/ \
@@ -47,4 +48,4 @@ RUN groupadd -g ${GROUP_ID} ${USER_NAME} &&\
 
 USER ${USER_NAME}
 
-ENTRYPOINT ["python", "-m", "clip_server"]
+ENTRYPOINT ["python", "-m", "clip_server", "clip.yaml"]
