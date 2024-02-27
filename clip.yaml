@@ -1,0 +1,19 @@
+jtype: Flow
+version: '1'
+with:
+  port: 51000
+
+  protocol: http
+
+  prefetch: 10
+
+executors:
+  - name: clip_t
+    replicas: 1
+    uses:
+      jtype: CLIPEncoder
+      with:
+        name: RN50::openai
+      metas:
+        py_modules:
+          - clip_server.executors.clip_torch
